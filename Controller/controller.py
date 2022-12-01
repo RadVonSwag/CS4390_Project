@@ -1,7 +1,7 @@
 import socket
 #establish TCP connection with server
 serverSocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4, TCP
-serverSocket.connect(('127.0.0.1', 126)) #server just running on local host using random port (126)
+serverSocket.connect(('10.0.0.1', 1260)) #server just running on local host using random port (126)
 
 #send request to the server for a list of files stored
 serverSocket.sendall('getfilelist')
@@ -40,7 +40,7 @@ for key, value in userinputmap.items():
 
 #establish TCP connection with Renderer
 rendererSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-rendererSocket.connect(('127.0.0.1', 252))
+rendererSocket.connect(('10.0.0.3', 2520))
 
 #send user selections file to renderer
 rendererSocket.sendall(renderlistfile)
