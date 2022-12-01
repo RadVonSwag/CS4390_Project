@@ -8,8 +8,8 @@ Tells the Renderer to request a file from the Server
 import json
 import socket
 import sys
-import utils
-from utils import *
+import util
+from util import *
 
 
 def get_menu_input():
@@ -40,7 +40,7 @@ def get_server_files():
     data = send_message(Message.FETCH, info_payloads)
     
     #Decode the recieved data from unicode, then Parse data into JSON format
-    data = utils.json_loads_byteified(data)
+    data = util.json_loads_byteified(data)
     files = data.get("content")
 
     print("List of files in Server:")
@@ -84,7 +84,7 @@ def send_message(type, info_payload):
 def close_server():
     payload = json.dumps({"type": Message.EXIT})
     data = send_message(Message.EXIT, payload)
-    data = utils.json_loads_byteified(data)
+    data = util.json_loads_byteified(data)
     msg = data.get("content")
     print(str(msg))
 
