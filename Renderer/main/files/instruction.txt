@@ -1,0 +1,6 @@
+General Considerations:
+    1. The renderer does not have the capability to buffer so it just renders what it receives from the server.
+    2. During the streaming session, controller can request the renderer to pause/resume/start-from -the-beginning the streaming.
+    3. The controller, renderer, and server must run on different hosts.
+    4. For media file types, at minimum text files must be supported.
+      Request Media File List:
