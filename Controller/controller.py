@@ -1,50 +1,67 @@
 import socket
+import util
+import sys
+from util import *
 #establish TCP connection with server
 serverSocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4, TCP
-serverSocket.connect(('10.0.0.1', 1260)) #server just running on local host using random port (126)
+serverSocket.connect((Address.SERVER, Port.SERVER))
+filemap = {}
 
+def getFileList():
+    serverSocket.sendall('getfilelist')
+    try:
+        serverSocket.listen(10)
+        fileList = open(serverSocket.recv(1024, 'r'))
+        lines = fileList.readlines()
+        return lines
+
+    except socket.error:
+            print('received nothing')
 #send request to the server for a list of files stored
-serverSocket.sendall('getfilelist')
 
-#wait for response from server (expecting a file in return)
-try:
-    serverSocket.listen(10)
-    fileList = open(serverSocket.recv(1024, 'r'))
-    lines = fileList.readlines()
-    filemap = {}
-
-    #print the available files returned from the server to the console and store the options in a dict
+def displayFileList(lines):
     i = 0
-    print("Choose which files you would like to stream by typing their numbers.\nHit Enter once you've selected the files you would like to stream.")
+    print("Choose which file you would like to stream by typing its name\nHit Enter once you've typed the name of the file you would like to stream.\n Input \"quit\" if you wish to quit the application.")
     for line in lines:
         i += 1
         print("{} {}".format(i, line.strip()))
         filemap[i] = line.strip()
 
-except socket.error:
-        print('received nothing')
+def createRenderList(userinput, filemap):
+    userinputmap = {}
 
-#accept user input
-userinput = input('I would like to stream files: ')
-userinputmap = {}
+    #put the user's choices into a new dict
+    for key in userinput:
+        userinputmap[int(key)] = filemap[int(key)]
 
-#put the user's choices into a new dict
-for key in userinput:
-    userinputmap[int(key)] = filemap[int(key)]
+    #create file with user's choices to send to renderer
+    renderlistfile = open('Controller/renderlistfile.txt', 'w')
+    for key, value in userinputmap.items():
+        renderlistfile.write('%s %s\n' % (key, value))
+    filename = renderlistfile.name
+    renderlistfile.close()
+    return filename
 
-#create file with user's choices to send to renderer
-renderlistfile = open('Controller/renderlistfile.txt', 'w')
-for key, value in userinputmap.items():
-    renderlistfile.write('%s %s\n' % (key, value))
+def sendToRenderer(filename):
+    #establish TCP connection with Renderer
+    rendererSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        rendererSocket.connect((Address.RENDER, Port.RENDER))
+    except socket.error as msg:
+        print("Failed to connect to Renderer. Error:" + str(msg))
+        sys.exit()
+
+    file = open(filename, 'r')
+    #send user selections file to renderer
+    rendererSocket.sendall(file)
 
 
-#establish TCP connection with Renderer
-rendererSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-rendererSocket.connect(('10.0.0.3', 2520))
-
-#send user selections file to renderer
-rendererSocket.sendall(renderlistfile)
-renderlistfile.close()
-
+choice = 'continue'
+while choice != 'quit':
+    print('CS-4390 Network File Streaming Application\n===========================================')
+    displayFileList()
+    choice = input('File: ')
+    renderfile = createRenderList(choice, filemap)
+    sendToRenderer(renderfile)
 
 

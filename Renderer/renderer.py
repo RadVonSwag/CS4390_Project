@@ -5,8 +5,8 @@ Displays the file to the user
 '''
 import socket
 import sys
-import utils
-from utils import *
+import util
+from util import *
 
 #Start listen SERVER
 def start_renderer():
@@ -39,7 +39,7 @@ def start_renderer():
             print("Message: " + str(message))
             
             # Decode the message
-            message = utils.json_loads_byteified(message)
+            message = util.json_loads_byteified(message)
             type = message.get("type")
             
             if type == Message.REQUEST:
@@ -54,7 +54,7 @@ def start_renderer():
                 data = client_socket.recv(2048)
                 client_socket.close()
                 
-                payload = utils.json_loads_byteified(data)
+                payload = util.json_loads_byteified(data)
                 if payload["type"] == Message.ERROR:
                     print(payload["content"])
                 else:            
