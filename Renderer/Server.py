@@ -12,8 +12,8 @@ from os import listdir
 from os.path import isfile, join
 import socket
 import sys
-import utils
-from utils import *
+import util
+from util import *
 
 data_folder = os.path.normpath("files")
 
@@ -52,7 +52,7 @@ def start_server():
             print("Message: " + str(message))
             
             # Decode the message
-            message = utils.json_loads_byteified(message)
+            message = util.json_loads_byteified(message)
             type = message.get("type")
             
             if type == Message.FETCH:
