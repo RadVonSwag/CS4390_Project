@@ -3,19 +3,31 @@ import sys;
 import os;
 import pickle;
 
-HOST = "127.0.0.1"  # The server's hostname or IP address
-PORT = 65432  # The port used by the server
+S_HOST = "127.0.0.1"  # The server's hostname or IP address
+S_PORT = 65432  # The port used by the server
+
+R_HOST = "127.0.0.2"
+R_PORT = 65431
 
 Direc = os.path.normpath("files")
 files = os.listdir(Direc)
-files = [f for f in files if os.path.isfile(Direc+'/'+f)]
-msg = pickle.dumps(files)
+#files = [f for f in files if os.path.isfile(Direc+'/'+f)]
+#print(files)
+ 
+# result = []
+# def filePath(file, path):
+#     for root, dirs, files in os.walk(Direc):
+#         if file in files:
+#             result.append(os.path.join(root, file))
+#     return result
+
+# f1 = open()
 
 serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket created!")
 
 #Bind socket to localhost under defined port
-serverSocket.bind((HOST, PORT))
+serverSocket.bind((S_HOST, S_PORT))
 print("Socket bind complete")
 
 #Start listening on socket
@@ -34,10 +46,22 @@ while(2):
 
         if message == 'files':
             print("Message: " + message)
+            msg = pickle.dumps(files)
             conn.send(msg)
-        elif message == 'hello.txt':
-            print("Message: " + message)
-            conn.send()
+            
+            file = (conn.recv(1024)).decode()
+            print("Message: " + file)
+            # path = filePath(file, Direc)
+            # media = open(path, "r")
+            # msg = media.read()
+            try:
+                fileIndex = files.index(file)
+                if files[fileIndex] == file:
+                    f =  os.path.normpath(file)
+            except ValueError:
+                print("The files does not exist.")
+                
+            conn.send(msg)
         else:
             # Close connectionSocket            
             conn.close()
