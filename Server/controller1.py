@@ -60,8 +60,8 @@ while val != 3:
         client2Socket.send(file.encode())
         
         #get the data of the file requested from renderer
-        data = client2Socket.recv(1024).decode("utf-8")
-        print("\n" + data +"\n")
+        #data = client2Socket.recv(1024).decode("utf-8")
+        #print("\n" + data +"\n")
         
         client2Socket.close()
         
