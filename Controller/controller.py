@@ -2,13 +2,13 @@ import socket
 import util
 import sys
 from util import *
-#establish TCP connection with server
-serverSocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4, TCP
-serverSocket.connect((Address.SERVER, Port.SERVER))
 filemap = {}
 
 def getFileList():
-    serverSocket.sendall('getfilelist')
+    #establish TCP connection with server
+    serverSocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4, TCP
+    serverSocket.connect((Address.SERVER, Port.SERVER))
+    serverSocket.sendall()
     try:
         serverSocket.listen(10)
         fileList = open(serverSocket.recv(1024, 'r'))
