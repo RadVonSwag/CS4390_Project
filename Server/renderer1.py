@@ -29,7 +29,9 @@ while(2):
         file = open(path, "r")
         data = file.read()
         
-        conn.send(data.encode("utf-8"))
+        print("\n" + data + "\n")
+        
+        #conn.send(data.encode("utf-8"))
         
     except IOError:
         conn.close()
