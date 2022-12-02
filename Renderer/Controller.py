@@ -1,10 +1,3 @@
-'''
-Controller class
-Displays the menu to the user
-Can request list of files in Server
-Tells the Renderer to request a file from the Server
-'''
-
 import json
 import socket
 import sys

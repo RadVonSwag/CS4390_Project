@@ -1,11 +1,3 @@
-'''
-Server class
-Listens for requests made by the Controller and Renderer
-Sends a list of files to Controller
-Sends actual files to Renderer
-https://github.com/bippity/NetworkApplicationProject/
-'''
-
 import json
 import os
 from os import listdir

@@ -1,7 +1,3 @@
-'''
-utils class
-Provides useful functions/classes
-'''
 import json
 
 class Address:
