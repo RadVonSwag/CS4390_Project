@@ -1,7 +1,7 @@
 import socket
 #establish TCP connection with server
 serverSocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPv4, TCP
-serverSocket.connect(('10.0.0.1', 1260)) #server just running on local host using random port (126)
+serverSocket.connect(('127.0.0.1', 65432)) #server just running on local host using random port (126)
 
 #send request to the server for a list of files stored
 request = "GET"

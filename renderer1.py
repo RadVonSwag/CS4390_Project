@@ -1,7 +1,7 @@
 import socket;
 import os;
 
-R_HOST = "127.0.0.2"
+R_HOST = "127.0.0.1"
 R_PORT = 65431
 
 S_HOST = "127.0.0.1"
@@ -55,7 +55,7 @@ while(2):
             if input[0:6] == "FORWARD":
                 spaces = 0
                 for char in input:
-                    if char = ' ':
+                    if char == ' ':
                         spaces += 1
                     elif spaces == 1:
                         forwardToIP = forwardToIP + char
