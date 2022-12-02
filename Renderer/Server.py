@@ -55,7 +55,7 @@ def start_server():
             message = util.json_loads_byteified(message)
             type = message.get("type")
             
-            if type == Message.FETCH:
+            if type == Message.GET:
                 files = list_files()
                 #Convert list to JSON to send across socket
                 data = json.dumps({"content": files})
@@ -77,7 +77,7 @@ def start_server():
             print("Connection closed!")
                 
         except IOError as err:
-            # Send response message for invalid file
+            # Send SEND message for invalid file
             print("IOError: " + str(err))
             info_payload = {}
             info_payload["type"] = Message.ERROR
@@ -94,7 +94,7 @@ def send_file(connSocket, fileName):
     #Open file in read-binary
     file = open(join(data_folder, fileName), "rb")
     info_payload= {}
-    info_payload["type"] = Message.RESPONSE
+    info_payload["type"] = Message.SEND
     info_payload["fileName"] = fileName
     info_payload["content"] = file.read()
     data = json.dumps(info_payload)

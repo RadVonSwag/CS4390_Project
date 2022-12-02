@@ -13,14 +13,13 @@ from util import *
 
 
 def get_menu_input():
-    menu = ("==Network Application==\n"
-            "1) List files from the SERVER.\n"
-            "2) Open file.\n"
+    menu = ("CS-4390 Group Project\n============================================\n"
+            "1) Show a list of files stored on the Server.\n"
+            "2) Open a file.\n"
             "3) Exit.\n")
     while True:
         try:
-            print("yor option is 1 or 2 or 3")
-            inputVal = int(raw_input(menu + "Choose an option: "))
+            inputVal = int(raw_input(menu + "Enter 1 2 or 3 to select an option: "))
         except ValueError:
             print("Invalid option. Please try again.")
             continue
@@ -36,8 +35,8 @@ def get_menu_input():
 #Lists SERVER files in a list
 def get_server_files():
     #Create info_payload message
-    info_payloads = json.dumps({"type": Message.FETCH})
-    data = send_message(Message.FETCH, info_payloads)
+    info_payloads = json.dumps({"type": Message.GET})
+    data = send_message(Message.GET, info_payloads)
     
     #Decode the recieved data from unicode, then Parse data into JSON format
     data = util.json_loads_byteified(data)
@@ -55,8 +54,8 @@ def send_message(type, info_payload):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     # Determine what message to send
-    #Send fetch request of SERVER files
-    if type == Message.FETCH:
+    #Send GET request of SERVER files
+    if type == Message.GET:
         client.connect((Address.SERVER, Port.SERVER))
         client.sendall(info_payload)
         

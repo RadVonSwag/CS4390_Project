@@ -13,10 +13,10 @@ class Port:
     RENDER = 1251
 
 class Message:
-    FETCH = 0
-    REQUEST = 1
-    RESPONSE = 2
-    EXIT = 3
+    GET = 'GET'
+    REQUEST = 'GET '
+    SEND = 'SEND'
+    EXIT = 'EXIT'
     ERROR = 4
 
 #Efficiently decode unicode back to its original form from JSON

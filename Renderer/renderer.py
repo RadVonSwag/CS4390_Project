@@ -75,7 +75,7 @@ def start_renderer():
             print("Connection closed!")
                 
         except IOError as err:
-            # Send response message for invalid file
+            # Send SEND message for invalid file
             print("IOError: " + str(err))
             connection_socket.close()
             
